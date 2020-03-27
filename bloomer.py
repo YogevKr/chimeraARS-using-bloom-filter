@@ -73,7 +73,7 @@ def chimera_ars_score(
 
 def main(args):
     host_genome: str = tuple(islice(SeqIO.parse(args.host_genome, "fasta"), 1))[0]
-    target_genome: str = tuple(islice(SeqIO.parse(args.host_genome, "fasta"), 1))[0]
+    target_genome: str = tuple(islice(SeqIO.parse(args.target_genome, "fasta"), 1))[0]
 
     score = chimera_ars_score(
         host_genome=host_genome.seq,
