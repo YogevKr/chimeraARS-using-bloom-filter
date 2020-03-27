@@ -82,7 +82,10 @@ def main(args):
         error_rate=args.error_rate / args.max_k,
         num_processors=0,
     )
-    print(score)
+
+    print(f"Host genome length: {len(host_genome)}")
+    print(f"Target genome length: {len(target_genome)}")
+    print(f"chimeraARS score: {score}")
 
 
 if __name__ == "__main__":
