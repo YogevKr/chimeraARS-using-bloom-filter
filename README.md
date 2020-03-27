@@ -1,6 +1,6 @@
 # chimeraARS using bloom filter
 
-Calculating chimeraARS, using a low sapce complexity method.
+Calculating chimeraARS, using a low space complexity method.
 
 ## Installation
 
@@ -25,9 +25,9 @@ usage: bloomer.py [-h] --host_genome HOST_GENOME --target_genome TARGET_GENOME
 optional arguments:
   -h, --help            show this help message and exit
   --host_genome HOST_GENOME
-                        Path of host genome FASTA file
+                        Path of host genome FASTA file (Single sequence)
   --target_genome TARGET_GENOME
-                        Path of target genome FASTA file
+                        Path of target genome FASTA file (Single sequence)
   --max_k MAX_K         Longest sequence
   --error_rate ERROR_RATE
                         Error rate

@@ -89,10 +89,10 @@ if __name__ == "__main__":
     # Parse argument
     parser = argparse.ArgumentParser()
     parser.add_argument(
-        "--host_genome", type=str, required=True, help="Path of host genome FASTA file"
+        "--host_genome", type=str, required=True, help="Path of host genome FASTA file (Single sequence)"
     )
     parser.add_argument(
-        "--target_genome", type=str, required=True, help="Path of target genome FASTA file"
+        "--target_genome", type=str, required=True, help="Path of target genome FASTA file (Single sequence)"
     )
     parser.add_argument("--max_k", type=int, default=20, help="Longest sequence")
     parser.add_argument("--error_rate", type=int, default=0.01, help="Error rate")
