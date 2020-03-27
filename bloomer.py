@@ -25,11 +25,10 @@ def num_of_bits(ideal_num_elements_n, error_rate):
     return numerator / denominator
 
 
-def chimera_ars_score(host_genome, target_genome):
+def chimera_ars_score(host_genome, target_genome, max_k=50, error_rate=0.0001):
     total_hits_list = []
 
-    for k in range(1,50):
-        error_rate = 0.01
+    for k in range(1,max_k+1):
         max_elements = 4**k if 4**k < len(host_genome) else len(host_genome)
 
         bloom = BloomFilter(max_elements=max_elements, error_rate=error_rate)
