@@ -18,6 +18,7 @@ def window(seq, n=2):
         result = result[1:] + (elem,)
         yield result
 
+
 def num_of_bits(ideal_num_elements_n, error_rate):
     numerator = -1 * ideal_num_elements_n * math.log(error_rate)
     denominator = math.log(2) ** 2
