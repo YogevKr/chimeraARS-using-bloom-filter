@@ -39,9 +39,14 @@ def get_populted_bloom_filter(k, host_genome, error_rate):
     return bloom
 
 
-def count_hits(k_bloom_tuple, target_genome):
-    k, bloom = k_bloom_tuple
+def count_hits(bloom, k, target_genome):
     return sum(map(lambda x: x in bloom, window(target_genome, n=k)))
+
+
+def run_one_window(k, *, host_genome, target_genome, error_rate):
+    bloom = get_populted_bloom_filter(k, host_genome, error_rate)
+
+    return count_hits(bloom, k, target_genome)
 
 
 def chimera_ars_score(
@@ -56,15 +61,10 @@ def chimera_ars_score(
 
     pool = Pool(num_processors or cpu_count())
 
-    populate_runner = functools.partial(
-        get_populted_bloom_filter, host_genome=host_genome, error_rate=error_rate
+    runner = functools.partial(
+        get_populted_bloom_filter, host_genome=host_genome, target_genome=target_genome, error_rate=error_rate
     )
-    bloom_models = pool.map(populate_runner, range(1, max_k + 1))
-
-    hit_runner = functools.partial(count_hits, target_genome=target_genome)
-    total_hits_list = pool.map(
-        hit_runner, ((k, bloom) for k, bloom in enumerate(bloom_models, start=1))
-    )
+    total_hits_list = pool.map(runner, range(1, max_k + 1))
 
     print(total_hits_list)
 
