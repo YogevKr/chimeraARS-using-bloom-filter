@@ -62,7 +62,10 @@ def chimera_ars_score(
     pool = Pool(num_processors or cpu_count())
 
     runner = functools.partial(
-        get_populted_bloom_filter, host_genome=host_genome, target_genome=target_genome, error_rate=error_rate
+        run_one_window,
+        host_genome=host_genome,
+        target_genome=target_genome,
+        error_rate=error_rate,
     )
     total_hits_list = pool.map(runner, range(1, max_k + 1))
 
@@ -72,8 +75,12 @@ def chimera_ars_score(
 
 
 def main(args):
-    host_genome_seq: Seq.Seq =  sum([g.seq for g in SeqIO.parse(args.host_genome, "fasta")], Seq.Seq("")).upper()
-    target_genome_seq: Seq.Seq = tuple(islice(SeqIO.parse(args.target_genome, "fasta"), 1))[0].seq.upper()
+    host_genome_seq: Seq.Seq = sum(
+        [g.seq for g in SeqIO.parse(args.host_genome, "fasta")], Seq.Seq("")
+    ).upper()
+    target_genome_seq: Seq.Seq = tuple(
+        islice(SeqIO.parse(args.target_genome, "fasta"), 1)
+    )[0].seq.upper()
 
     score = chimera_ars_score(
         host_genome=host_genome_seq,
@@ -87,8 +94,9 @@ def main(args):
 
     print(f"Host genome length: {len(host_genome_seq)}")
     print(f"Target genome length: {len(target_genome_seq)}")
-    print(f"chimeraARS score: {score} ({false_positive_rate * 100:0.2f}% false positive)")
-
+    print(
+        f"chimeraARS score: {score} ({false_positive_rate * 100:0.2f}% false positive)"
+    )
 
 
 if __name__ == "__main__":
@@ -98,7 +106,10 @@ if __name__ == "__main__":
         "--host_genome", type=str, required=True, help="Path of host genome FASTA file"
     )
     parser.add_argument(
-        "--target_genome", type=str, required=True, help="Path of target genome FASTA file (Single sequence)"
+        "--target_genome",
+        type=str,
+        required=True,
+        help="Path of target genome FASTA file (Single sequence)",
     )
     parser.add_argument("--max_k", type=int, default=20, help="Longest sequence")
     parser.add_argument("--error_rate", type=float, default=0.01, help="Error rate")
