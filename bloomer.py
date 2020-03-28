@@ -74,13 +74,13 @@ def chimera_ars_score(
     return sum(total_hits_list) / len(target_genome)
 
 
-def naive_chimeraARS(host_genome, target_genome):
+def naive_chimera_ars(host_genome, target_genome):
     hits = []
 
     for w in tqdm(range(1,50)):
         sub_seq = set(["".join(s) for s in window(host_genome, w)])
 
-        count = sum([s in sub_seq for s in window(target_genome, w)])
+        count = sum(["".join(s) in sub_seq for s in window(target_genome, w)])
         hits.append(count)
         if not count:
             break
@@ -97,7 +97,7 @@ def main(args):
         islice(SeqIO.parse(args.target_genome, "fasta"), 1)
     )[0].seq.upper()
 
-    naive_chimeraARS(host_genome_seq, target_genome_seq)
+    naive_chimera_ars(host_genome_seq, target_genome_seq)
 
     # score = chimera_ars_score(
     #     host_genome=host_genome_seq,
