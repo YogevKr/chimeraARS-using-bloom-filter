@@ -25,7 +25,7 @@ usage: bloomer.py [-h] --host_genome HOST_GENOME --target_genome TARGET_GENOME
 optional arguments:
   -h, --help            show this help message and exit
   --host_genome HOST_GENOME
-                        Path of host genome FASTA file (Single sequence)
+                        Path of host genome FASTA file
   --target_genome TARGET_GENOME
                         Path of target genome FASTA file (Single sequence)
   --max_k MAX_K         Longest sequence

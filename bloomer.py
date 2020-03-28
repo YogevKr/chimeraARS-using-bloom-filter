@@ -2,7 +2,7 @@ import argparse
 import math
 from itertools import islice
 
-from Bio import SeqIO
+from Bio import SeqIO, Seq
 from bloom_filter import BloomFilter
 from tqdm import tqdm
 
@@ -45,8 +45,8 @@ def count_hits(k_bloom_tuple, target_genome):
 
 
 def chimera_ars_score(
-    host_genome: str,
-    target_genome: str,
+    host_genome: Seq.Seq,
+    target_genome: Seq.Seq,
     max_k: int = 20,
     error_rate: float = 0.0001,
     num_processors: int = 0,
@@ -72,27 +72,30 @@ def chimera_ars_score(
 
 
 def main(args):
-    host_genome: str = tuple(islice(SeqIO.parse(args.host_genome, "fasta"), 1))[0]
-    target_genome: str = tuple(islice(SeqIO.parse(args.target_genome, "fasta"), 1))[0]
+    host_genome_seq: Seq.Seq =  sum([g.seq for g in SeqIO.parse(args.host_genome, "fasta")], Seq.Seq("")).upper()
+    target_genome_seq: Seq.Seq = tuple(islice(SeqIO.parse(args.target_genome, "fasta"), 1))[0].seq.upper()
 
     score = chimera_ars_score(
-        host_genome=host_genome.seq,
-        target_genome=target_genome.seq,
+        host_genome=host_genome_seq,
+        target_genome=target_genome_seq,
         max_k=args.max_k,
         error_rate=args.error_rate / args.max_k,
         num_processors=0,
     )
 
-    print(f"Host genome length: {len(host_genome)}")
-    print(f"Target genome length: {len(target_genome)}")
-    print(f"chimeraARS score: {score}")
+    false_positive_rate = 1 - ((score - args.error_rate) / score)
+
+    print(f"Host genome length: {len(host_genome_seq)}")
+    print(f"Target genome length: {len(target_genome_seq)}")
+    print(f"chimeraARS score: {score} ({false_positive_rate * 100:0.2f}% false positive)")
+
 
 
 if __name__ == "__main__":
     # Parse argument
     parser = argparse.ArgumentParser()
     parser.add_argument(
-        "--host_genome", type=str, required=True, help="Path of host genome FASTA file (Single sequence)"
+        "--host_genome", type=str, required=True, help="Path of host genome FASTA file"
     )
     parser.add_argument(
         "--target_genome", type=str, required=True, help="Path of target genome FASTA file (Single sequence)"
