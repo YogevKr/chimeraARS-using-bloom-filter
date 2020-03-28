@@ -101,7 +101,7 @@ if __name__ == "__main__":
         "--target_genome", type=str, required=True, help="Path of target genome FASTA file (Single sequence)"
     )
     parser.add_argument("--max_k", type=int, default=20, help="Longest sequence")
-    parser.add_argument("--error_rate", type=int, default=0.01, help="Error rate")
+    parser.add_argument("--error_rate", type=float, default=0.01, help="Error rate")
     parser.add_argument(
         "--num_processors", type=int, default=0, help="Number of processors"
     )
