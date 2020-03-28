@@ -86,7 +86,7 @@ def naive_chimera_ars(host_genome, target_genome):
             break
 
     print(hits)
-    print(sum(hits))
+    print(sum(hits)/ len(target_genome))
 
 
 def main(args):
