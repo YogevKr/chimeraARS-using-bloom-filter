@@ -55,7 +55,7 @@ def chimera_ars_score(
     max_k: int = 20,
     error_rate: float = 0.0001,
     num_processors: int = 0,
-) -> float:
+):
     from multiprocessing import Pool, cpu_count
     import functools
 
@@ -71,7 +71,7 @@ def chimera_ars_score(
 
     print(total_hits_list)
 
-    return sum(total_hits_list) / len(target_genome)
+    return sum(total_hits_list) / len(target_genome), total_hits_list
 
 
 def naive_chimera_ars(host_genome, target_genome):
@@ -88,6 +88,8 @@ def naive_chimera_ars(host_genome, target_genome):
     print(hits)
     print(f"Accurate but naive score: {sum(hits) / len(target_genome)}")
 
+    return hits
+
 
 def main(args):
     host_genome_seq: Seq.Seq = sum(
@@ -99,7 +101,7 @@ def main(args):
 
     naive_chimera_ars(host_genome_seq, target_genome_seq)
 
-    score = chimera_ars_score(
+    score, _ = chimera_ars_score(
         host_genome=host_genome_seq,
         target_genome=target_genome_seq,
         max_k=args.max_k,
