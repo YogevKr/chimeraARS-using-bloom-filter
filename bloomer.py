@@ -86,7 +86,7 @@ def naive_chimera_ars(host_genome, target_genome):
             break
 
     print(hits)
-    print(sum(hits)/ len(target_genome))
+    print(f"Accurate but naive score: {sum(hits) / len(target_genome)}")
 
 
 def main(args):
@@ -99,21 +99,21 @@ def main(args):
 
     naive_chimera_ars(host_genome_seq, target_genome_seq)
 
-    # score = chimera_ars_score(
-    #     host_genome=host_genome_seq,
-    #     target_genome=target_genome_seq,
-    #     max_k=args.max_k,
-    #     error_rate=args.error_rate / args.max_k,
-    #     num_processors=0,
-    # )
+    score = chimera_ars_score(
+        host_genome=host_genome_seq,
+        target_genome=target_genome_seq,
+        max_k=args.max_k,
+        error_rate=args.error_rate / args.max_k,
+        num_processors=0,
+    )
 
-    # false_positive_rate = 1 - ((score - args.error_rate) / score)
+    false_positive_rate = 1 - ((score - args.error_rate) / score)
 
-    # print(f"Host genome length: {len(host_genome_seq)}")
-    # print(f"Target genome length: {len(target_genome_seq)}")
-    # print(
-    #     f"chimeraARS score: {score} ({false_positive_rate * 100:0.2f}% false positive)"
-    # )
+    print(f"Host genome length: {len(host_genome_seq)}")
+    print(f"Target genome length: {len(target_genome_seq)}")
+    print(
+        f"chimeraARS score: {score} ({false_positive_rate * 100:0.2f}% false positive)"
+    )
 
 
 if __name__ == "__main__":
