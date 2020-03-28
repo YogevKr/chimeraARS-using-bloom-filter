@@ -74,6 +74,21 @@ def chimera_ars_score(
     return sum(total_hits_list) / len(target_genome)
 
 
+def naive_chimeraARS(host_genome, target_genome):
+    hits = []
+
+    for w in tqdm(range(1,50)):
+        sub_seq = set(["".join(s) for s in window(host_genome, w)])
+
+        count = sum([s in sub_seq for s in window(target_genome, w)])
+        hits.append(count)
+        if not count:
+            break
+
+    print(hits)
+    print(sum(hits))
+
+
 def main(args):
     host_genome_seq: Seq.Seq = sum(
         [g.seq for g in SeqIO.parse(args.host_genome, "fasta")], Seq.Seq("")
@@ -82,21 +97,23 @@ def main(args):
         islice(SeqIO.parse(args.target_genome, "fasta"), 1)
     )[0].seq.upper()
 
-    score = chimera_ars_score(
-        host_genome=host_genome_seq,
-        target_genome=target_genome_seq,
-        max_k=args.max_k,
-        error_rate=args.error_rate / args.max_k,
-        num_processors=0,
-    )
+    naive_chimeraARS(host_genome_seq, target_genome_seq)
 
-    false_positive_rate = 1 - ((score - args.error_rate) / score)
+    # score = chimera_ars_score(
+    #     host_genome=host_genome_seq,
+    #     target_genome=target_genome_seq,
+    #     max_k=args.max_k,
+    #     error_rate=args.error_rate / args.max_k,
+    #     num_processors=0,
+    # )
 
-    print(f"Host genome length: {len(host_genome_seq)}")
-    print(f"Target genome length: {len(target_genome_seq)}")
-    print(
-        f"chimeraARS score: {score} ({false_positive_rate * 100:0.2f}% false positive)"
-    )
+    # false_positive_rate = 1 - ((score - args.error_rate) / score)
+
+    # print(f"Host genome length: {len(host_genome_seq)}")
+    # print(f"Target genome length: {len(target_genome_seq)}")
+    # print(
+    #     f"chimeraARS score: {score} ({false_positive_rate * 100:0.2f}% false positive)"
+    # )
 
 
 if __name__ == "__main__":
