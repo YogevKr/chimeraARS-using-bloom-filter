@@ -31,7 +31,7 @@ results["Scer"]["naive_hits"] = naive_chimera_ars(host_Scer, target)
 results["Ecoli"]["estimation_details"] = []
 results["Scer"]["estimation_details"] = []
 
-for e in [0.50, 0.40, 0.30, 0.20, 0.10, 0.5, 0.4, 0.3, 0.2, 0.1, 0.01, 0.001, 0.0001, 0.00001]:
+for e in [0.5, 0.4, 0.3, 0.2, 0.1, 0.01, 0.001, 0.0001, 0.00001]:
     print(f"## Error {e} ##")
     ecoli_score, ecoli_hits = chimera_ars_score(
         host_genome=host_Ecoli,
